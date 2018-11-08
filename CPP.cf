@@ -1,0 +1,135 @@
+
+
+-- Programming Language Technology TDA151 -- GROUP: 17 
+-- Johan Bergström, ???
+-- Molly Skelbye, mollyb@student.chalmers.se
+
+-- entrypoints Program, Def ;                                
+ 
+PDefs.  Program ::= [Def] ;                                        -- A program is a sequence of definitions.
+
+-- DEFINITIONS  
+DUsing. Def	::= "using" Stm ;		
+
+terminator Def "" ;
+
+-- COMMENTS AND PREPROCESSOR DIRECTIVES 
+comment "//" ;
+comment "/*" "*/" ;
+comment "#" ;
+
+DFun. Def		::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;   -- Defines a function 
+separator Arg "," ;
+terminator Stm "" ;
+
+-- ARGUMENT DECLARATION 
+ADecl.		Arg	::= Type Id ;				-- An argument has a type and an identifier.
+
+-- VARIABLE DECLARATIONS 
+
+
+-- STATEMENTS 
+SExp.		Stm	::= Exp ";" ;				-- Any expression followed by a semicolon ; can be used as a statement.
+SDecl.		Stm	::= Type Id ";" ;			-- Any declaration followed by a semicolon ; can be used as a statement.
+SDecls.		Stm	::= Type Id "," [Id] ";" ;		-- Declaration of multiple variables.
+SInit.		Stm	::= Type Id "=" Exp ";" ;		-- Initilization.
+SReturn.	Stm	::= "return" Exp ";" ;
+SWhile.		Stm	::= "while" "(" Exp ")" Stm ;
+SBlock.		Stm	::= "{" [Stm] "}" ;
+SIfElse.	Stm	::= "if" "(" Exp ")" Stm "else" Stm ;
+SDoWhile. 	Stm 	::= "do" Stm "while" "(" Exp ")" ; 	-- Do-While loop with expression in paranthesis.  
+SForLoop.	Stm 	::= "for" "(" Stm ";" Exp ";" Exp ")" Stm ; -- For-loop with one declaration, two expressions, one statement. FEL 
+
+
+-------------------------------------------------------------------------
+-- std::cout << "Hello, world!" << std::endl;
+-- std::cout << "Please enter your first name: ";
+-- std::string name;     // define `name'
+-- std::cin >> name;     // read into `name'
+-- std::cout << "Hello, " << name  << "!" << std::endl;
+-- using std::cin;             using std::sort;
+-- cin >> midterm >> final;
+-- cout << "Enter all your homework grades, "
+--	        "followed by end-of-file: ";
+
+SId.		Stm	::= Exp Id ";" ;
+SCOut.		Stm	::= Exp "<<" Stm ;  
+EColon.		Exp	::= Id "::" Exp ;			-- Scope Resolution Operator
+
+-- separator nonempty qualifiedConstant "::"; 
+-- TQuantifiedConstant qualifiedConstant 
+
+-- separator qualifiedConstant "::" 
+-- TQualConstant. 
+-- SCin1.		Stm	::= Exp ">>" Id ";" ;
+-- SCin2.		Stm	::= Stm ">>" Exp ;
+
+
+-- SEPARATORS 
+separator nonempty Id "," ;	
+
+-- separator String "" ;
+
+
+-- EXPRESSIONS 
+-- EUsing.		Exp16	::= "using" ;                             
+EString.	Exp15	::= String ;  -- jvb
+----------------------------------------------------------------------------
+EInt.		Exp15	::= Integer ;
+EDouble.	Exp15	::= Double ;
+ETrue.		Exp15	::= "true" ;
+EFalse.		Exp15	::= "false" ;
+EId.		Exp15	::= Id ;
+
+EApp.		Exp15	::= Id "(" [Exp] ")" ;			-- Function call.
+
+EPIncr.		Exp14	::= Exp15 "++" ;
+EPDecr.		Exp14	::= Exp15 "--" ;
+EIncr.		Exp13	::= "++" Exp14 ;
+EDecr.		Exp13	::= "--" Exp14 ;
+
+ETimes.		Exp12	::= Exp12 "*"  Exp13 ;
+EDiv.		Exp12	::= Exp12 "/"  Exp13 ;
+EMod.		Exp12	::= Exp12 "%"  Exp13 ;			
+EPlus.		Exp11	::= Exp11 "+"  Exp12 ;
+EMinus.		Exp11	::= Exp11 "-"  Exp12 ;
+
+ELsh.		Exp10	::= Exp10 "<<"  Exp11 ;			
+ERsh.		Exp10	::= Exp10 ">>"  Exp11 ;			
+
+ELt.		Exp9	::= Exp9  "<"  Exp10 ;
+EGt.		Exp9	::= Exp9  ">"  Exp10 ;
+ELtEq.		Exp9	::= Exp9  "<=" Exp10 ;
+EGtWq.		Exp9	::= Exp9  ">=" Exp10 ;
+EEq.		Exp8	::= Exp8  "==" Exp9 ;
+ENEq.		Exp8	::= Exp8  "!=" Exp9 ;
+EAnd.		Exp4	::= Exp4  "&&" Exp5 ;
+EOr.		Exp3	::= Exp3  "||" Exp4 ;
+EAss.		Exp2	::= Exp3  "="  Exp2 ;
+
+coercions Exp 15 ;
+separator Exp "," ;
+
+-- TYPES  
+Tbool.		Type	::= "bool" ;
+Tdouble.	Type	::= "double" ;
+Tint.		Type	::= "int" ;
+Tvoid.		Type	::= "void" ;
+--TQconst.	Type 	::= qualConst; 
+
+--separator nonempty qualConst "::"; 
+
+
+-- QUALIFIED CONSTANTS 
+
+
+token Id (letter (letter | digit | '_')*) ;
+
+-- position token CIdent (letter | (letter | digit | '_')*) ;
+
+
+
+
+
+
+
